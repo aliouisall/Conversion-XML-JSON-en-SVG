@@ -1,7 +1,7 @@
 #!/usr/bin/python3.5
 # -*-coding:Utf-8 -*
 
-def getOpt():
+def gestiontOpt():
 
     from optparse import OptionParser
 
