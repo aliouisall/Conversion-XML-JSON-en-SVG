@@ -13,11 +13,20 @@ def jsonValidator(content):
         numbItems = len(parsedJson)
         i = 2
         arrayEntities = []
+        attributes = []
         while (i < numbItems):
             arrayEntities.append(parsedJson[i]['name'])
+            attributes.append(parsedJson[i]['data'][0].keys()) 
             i = i + 1
-        for item in arrayEntities:
-            print(item)
+        # for item in arrayEntities:
+        #     print(item)
+        j = 0
+        attribArrayLength = len(attributes)
+        while (j < attribArrayLength):
+            dict = list(attributes)[j]
+            for element in dict:
+                print(element)
+            j += 1
         return True
     except Exception as error:
         print("Error : %s" %error)
