@@ -8,13 +8,19 @@ import argparse
 # Définition de la fonction de validation
 def jsonValidator(content):
     try:
-        jsonContent = json.load(content)
-        for (k, v) in jsonContent.items():
-            print("Key: " + k)
-            print("Value: " + str(v))
+        parsedJson = json.load(content)
+        # jsonContent = json.dumps(parsedJson, sort_keys=True, indent = 4)
+        numbItems = len(parsedJson)
+        i = 2
+        arrayEntities = []
+        while (i < numbItems):
+            arrayEntities.append(parsedJson[i]['name'])
+            i = i + 1
+        for item in arrayEntities:
+            print(item)
         return True
-    except ValueError as error:
-        print("Invalid json : %s" %error)
+    except Exception as error:
+        print("Error : %s" %error)
         return False
 
 # Définition des différentes options et arguments
@@ -35,4 +41,3 @@ content = open(file)
 
 # Appel de la fonction de validation
 jsonValidator(content)
-
