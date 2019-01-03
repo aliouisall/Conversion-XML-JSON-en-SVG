@@ -8,11 +8,11 @@ from graphviz import Digraph
 
 dot = Digraph(comment='Entity Relationship Diagram')
 # dot.attr('node')
-dot.node('A',  shape='record', label="{Aliou | Sall}")
+# dot.node('A',  shape='record', label="{Aliou | Sall}")
 # dot.node('B', 'Sir Bedevere the Wise')
 # dot.node('L', 'Sir Lancelot the Brave')
-print(dot.source)
-dot.render('test-output/round-table.gv', view=True)
+# print(dot.source)
+# dot.render('test-output/round-table.gv', view=True)
 
 # dot.edges(['AB', 'AL'])
 # dot.edge('B', 'L', constraint='false')
@@ -34,12 +34,17 @@ def jsonValidator(content):
         # for item in arrayEntities:
         #     print(item)
         j = 0
+        k = 0
+        # l = 0
         attribArrayLength = len(attributes)
-        while (j < attribArrayLength):
-            dict = list(attributes)[j]
-            # for element in dict:
-            #     print(element)
-            j += 1
+        while (k < len(arrayEntities)):
+            dot.node(arrayEntities[k],  shape='record', color='blue', label=arrayEntities[k])
+            while (j < attribArrayLength):
+                dict = list(attributes)[j]
+                for element in dict:
+                    dot.node(element,  shape='record', color='blue', label=element)
+                j += 1
+            k += 1
         return True
     except ValueError as error:
         print("Error : %s" %error)
@@ -63,3 +68,5 @@ content = open(file)
 
 # Appel de la fonction de validation
 jsonValidator(content)
+dot.format = 'svg'
+dot.render('test-output/round-table.gv', view=True)
