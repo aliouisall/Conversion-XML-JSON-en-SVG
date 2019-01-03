@@ -1,9 +1,21 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python2.7
 # -*-coding:Utf-8 -*
 
 # Importation des modules nécessaires
 import json
 import argparse
+from graphviz import Digraph
+
+dot = Digraph(comment='Entity Relationship Diagram')
+# dot.attr('node')
+dot.node('A',  shape='record', label="{Aliou | Sall}")
+# dot.node('B', 'Sir Bedevere the Wise')
+# dot.node('L', 'Sir Lancelot the Brave')
+print(dot.source)
+dot.render('test-output/round-table.gv', view=True)
+
+# dot.edges(['AB', 'AL'])
+# dot.edge('B', 'L', constraint='false')
 
 # Définition de la fonction de validation
 def jsonValidator(content):
@@ -16,7 +28,8 @@ def jsonValidator(content):
         attributes = []
         while (i < numbItems):
             arrayEntities.append(parsedJson[i]['name'])
-            attributes.append(parsedJson[i]['data'][0].keys()) 
+            attributes.append(parsedJson[i]['data'][0].keys())
+            # print(i)
             i = i + 1
         # for item in arrayEntities:
         #     print(item)
@@ -24,11 +37,11 @@ def jsonValidator(content):
         attribArrayLength = len(attributes)
         while (j < attribArrayLength):
             dict = list(attributes)[j]
-            for element in dict:
-                print(element)
+            # for element in dict:
+            #     print(element)
             j += 1
         return True
-    except Exception as error:
+    except ValueError as error:
         print("Error : %s" %error)
         return False
 
