@@ -25,16 +25,18 @@ def gener():
     while (i < arrayEntitiesLength):
         tableContent = "{" + str(arrayEntities[i])
         dict = list(attributes)[i]
-        # print(arrayEntities[i])
         for index, element in enumerate(dict):
-            if (index == len(dict)-1):
-                tableContent = tableContent + " | " + str(element) + "}"
-            else:
+            if (index == 0):
                 tableContent = tableContent + " | " + str(element)
-            # print(element)
-        i += 1
+            elif (index == len(dict)-1):
+                tableContent = tableContent + " \\n " + str(element) + "}"
+            else:
+                tableContent = tableContent + " \\n " + str(element)
         print(tableContent)
-        dot.node(element, shape='record', color='blue', label=tableContent)
+        dot.node(arrayEntities[i], style="filled", fillcolor="#FCD975", shape='record', color='blue', label=tableContent)
+        i += 1
+    dot.edge('Chambre', 'Etudiant', constraint='false', color="blue", minlen="17", arrowhead="none")
+    
 
 # Définition de la fonction d'extraction
 def jsonExtractor(parsedContent):
