@@ -14,21 +14,27 @@ dot = Digraph(comment='Entity Relationship Diagram')
 # Déclaration du tableau des entités et de celui des attributs
 arrayEntities = []
 attributes = []
+tableArray = []
 
 # Définition de la fonction de génération
 def gener():
-    j = 0
-    k = 0
+    i = 0
     attribArrayLength = len(attributes)
-    while (k < len(arrayEntities)):
-        dot.node(arrayEntities[k],  shape='record', color='blue', label=arrayEntities[k])
-        while (j < attribArrayLength):
-            dict = list(attributes)[j]
-            for element in dict:
-                dot.node(element,  shape='record', color='blue', label=element)
-            print(dot.source)
-            j += 1
-        k += 1
+    arrayEntitiesLength = len (arrayEntities)
+
+    while (i < arrayEntitiesLength):
+        tableContent = "{" + str(arrayEntities[i])
+        dict = list(attributes)[i]
+        # print(arrayEntities[i])
+        for index, element in enumerate(dict):
+            if (index == len(dict)-1):
+                tableContent = tableContent + " | " + str(element) + "}"
+            else:
+                tableContent = tableContent + " | " + str(element)
+            # print(element)
+        i += 1
+        print(tableContent)
+        dot.node(element, shape='record', color='blue', label=tableContent)
 
 # Définition de la fonction d'extraction
 def jsonExtractor(parsedContent):
