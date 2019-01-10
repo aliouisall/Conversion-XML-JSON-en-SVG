@@ -85,4 +85,9 @@ def ExtractElt(fich):
     dwg.add(dwg.text(nomAssociation, insert=(80, 220), fill='black', font_size='15px', font_weight="bold", font_family="Arial"))
     dwg.add(dwg.text(NbrEtu, insert=(50, 250), fill='black', font_size='15px', font_weight="bold", font_family="Arial"))
 
+# Affichage de notre image svg
+    print(dwg.tostring())
+
+# Sauvegarde du fichier svg dans le disque
+    dwg.save()
   		
