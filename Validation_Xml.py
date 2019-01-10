@@ -57,4 +57,32 @@ def ExtractElt(fich):
         nomAssociation = association.find('nomAssos').text
     for attribut in association.findall('attribut'):
         NbrEtu = attribut.find('date').text
+#Creation du fichier svg
+    dwg = svgwrite.Drawing('projet.svg')
+
+#Creation de la première entité 
+    dwg.add(dwg.rect((10, 10), (200, 100), stroke=svgwrite.rgb(0,0, 0, '%'), fill='blue'))
+    dwg.add(dwg.text(id1, insert=(30,60), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.text(nom, insert=(30,80), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.text(prenom, insert=(30,100), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.text(cardi1, insert=(65,125), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.line((210, 40), (8, 40),  stroke=svgwrite.rgb(0,0,0, '%')))
+    dwg.add(dwg.text(nomEntite, insert=(65,25), stroke='none', fill='black', font_size='15px', font_weight="bold", font_family="Arial"))
+
+#Creation de la seconde entité
+    dwg.add(dwg.rect((10, 400), (200, 100), stroke=svgwrite.rgb(0, 0, 0, '%'), fill='blue'))
+    dwg.add(dwg.text(nomEntite2, insert=(70, 420), fill='black', font_size='15px', font_weight="bold", font_family="Arial"))
+    dwg.add(dwg.text(id2, insert=(30,450), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.text(intitule, insert=(30,470), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.text(cardi2, insert=(65,395), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
+    dwg.add(dwg.line((100, 110), (100, 400),  stroke=svgwrite.rgb(0,0,0, '%')))
+
+
+#Creation de l'association
+    dwg.add(dwg.line((210, 430), (8, 430),  stroke=svgwrite.rgb(0,0,0, '%')))
+    dwg.add(dwg.circle(center=(100,250), r=60,  stroke=svgwrite.rgb(15, 15, 15, '%'), fill='white'))
+    dwg.add(dwg.line((158, 230), (42, 230),  stroke=svgwrite.rgb(0,0,0, '%')))
+    dwg.add(dwg.text(nomAssociation, insert=(80, 220), fill='black', font_size='15px', font_weight="bold", font_family="Arial"))
+    dwg.add(dwg.text(NbrEtu, insert=(50, 250), fill='black', font_size='15px', font_weight="bold", font_family="Arial"))
+
   		
