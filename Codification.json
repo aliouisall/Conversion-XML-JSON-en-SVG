@@ -1,0 +1,61 @@
+[
+    {
+      "type": "header",
+      "version": "4.7.4",
+      "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+      "type": "database",
+      "name": "Codification"
+    },
+    {
+      "type": "table",
+      "name": "Chambre",
+      "database": "Codification",
+      "data": [
+        {
+          "numChambre": "63",
+          "numEtage": "3",
+          "idEtudiant": "1"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "name": "Pavillon",
+      "database": "Codification",
+      "data": [
+        {
+          "numChambre": "63",
+          "nomPavillon": "C"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "name": "Etudiant",
+      "database": "Codification",
+      "data": [
+        {
+          "idEtudiant": "1",
+          "prenom": "Aliou Ibrahima",
+          "nom": "SALL",
+          "email": "aliouibnibrahim@gmail.com",
+          "numCarteEtudiant": "201607DUM",
+          "motDePasse": "aliousall",
+          "dateNaissance": "1997-03-04"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "name": "Loger",
+      "database": "Codification",
+      "data": [
+        {
+          "Chambre": "0:n",
+          "Etudiant": "1:1"
+        }
+      ]
+    }
+]

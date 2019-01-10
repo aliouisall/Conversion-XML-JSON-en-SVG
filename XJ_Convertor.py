@@ -15,37 +15,66 @@ dot = Digraph(comment='Entity Relationship Diagram')
 arrayEntities = []
 attributes = []
 tableArray = []
+relationArray = []
+relationContent = []
 
 # Définition de la fonction de génération
 def gener():
+    
     i = 0
+    j = 0
     attribArrayLength = len(attributes)
     arrayEntitiesLength = len (arrayEntities)
 
     while (i < arrayEntitiesLength):
         tableContent = "{" + str(arrayEntities[i])
-        dict = list(attributes)[i]
-        for index, element in enumerate(dict):
-            if (index == 0):
+        dictAttributes = list(attributes)[i]
+        for indexAttributes, element in enumerate(dictAttributes):
+            if (indexAttributes == 0):
                 tableContent = tableContent + " | " + str(element)
-            elif (index == len(dict)-1):
-                tableContent = tableContent + " \\n " + str(element) + "}"
+            elif (indexAttributes == len(dictAttributes)-1):
+                tableContent = tableContent + " \\l " + str(element) + " \\l " + "}"
             else:
-                tableContent = tableContent + " \\n " + str(element)
-        print(tableContent)
+                tableContent = tableContent + " \\l " + str(element)
+        
         dot.node(arrayEntities[i], style="filled", fillcolor="#FCD975", shape='record', color='blue', label=tableContent)
         i += 1
-    dot.edge('Chambre', 'Etudiant', constraint='false', color="blue", minlen="17", arrowhead="none")
+    # print(dot.source)        
     
+    dictRelation = list(relationContent)[j]  
+    
+    while (j < len(relationArray)):
+        
+        dot.node(relationArray[j], style="filled", fillcolor="#FCD975", shape='circle', color='blue', label=relationArray[0])
+    
+        for indexRelation, element in enumerate(dictRelation):
+            print('Index : ' + str(indexRelation) + '\n Element : ' + str(element))
+            if (indexRelation == 0):
+                dot.edge(element, relationArray[0], xlabel="(0:1)", constraint='false', color="blue", minlen="12", arrowhead="none")
+            else:
+                dot.edge(relationArray[0], element, xlabel="(1:n)", constraint='false', color="blue", minlen="12", arrowhead="none")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+        j += 1
 
 # Définition de la fonction d'extraction
 def jsonExtractor(parsedContent):
+    
     numbItems = len(parsedContent)
+    j = 0
     i = 2
     while (i < numbItems):
-        arrayEntities.append(parsedContent[i]['name'])
-        attributes.append(parsedContent[i]['data'][0].keys())
+
+        if (str(parsedContent[i]['type']) == 'table'):
+            # Ajout d'éléments dans le tableu Entités
+            arrayEntities.append(parsedContent[i]['name'])
+            # Ajout d'élément dans le tableau Attributs
+            attributes.append(parsedContent[i]['data'][0].keys())
+        
+        if (str(parsedContent[i]['type']) == 'relationship'):
+            relationArray.append(parsedContent[i]['name'])
+            relationContent.append(parsedContent[i]['data'][0].keys())
+
         i = i + 1
+    
     gener()
 
 # Définition de la fonction de validation
@@ -73,5 +102,9 @@ content = open(args.inputFile)
 
 # Appel de la fonction de validation
 jsonValidator(content)
+
+# Choix du format
 dot.format = 'svg'
+
+# Génération du fichier svg avec un nom passé en argument
 dot.render(args.outputFile, view=True)
