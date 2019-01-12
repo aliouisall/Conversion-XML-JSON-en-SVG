@@ -90,11 +90,22 @@ def jsonExtractor(parsedContent):
     
     gener()
 
-# Définition de la fonction de validation
-def jsonValidator(content):
+# Définition de la fonction de validation pour un fichier
+def jsonValidatorFile(content):
     try:
         parsedJson = json.load(content)
         jsonExtractor(parsedJson)
+        return True
+    except ValueError as error:
+        print("Invalid JSON : %s" %error)
+        return False
+
+# Définition de la fonction de validation pour un lien
+def jsonValidatorHttp():
+    try:
+        response = requests.get(args.http)
+        json_data = response.json()
+        jsonExtractor(json_data)
         return True
     except ValueError as error:
         print("Invalid JSON : %s" %error)
@@ -120,14 +131,13 @@ if (args.input == 'xml'):
 elif(args.input == 'json'):
     print('Il s\'agit d\'un fichier json')
 
-# Ouverture du fichier
-# content = open(args.inputFile)
+if (args.inputFile):
 
-# Appel de la fonction de validation
-# jsonValidator(content)
+    content = open(args.inputFile) # Ouverture du fichier
+    jsonValidatorFile(content) # Appel de la fonction de validation
 
-response = requests.get(args.http)
-print(json.loads(response.text))
+elif(args.http):
+    jsonValidatorHttp()
 
 # Choix du format
 dot.format = 'svg'
