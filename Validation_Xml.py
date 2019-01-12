@@ -28,6 +28,7 @@ def extensionValidator(fichier):
 def xmlValidator(fic):
 	try:
 		tree = ET.parse(fic)
+		ExtractElt(fic)
 		return True
 	except ParseError as error:
 		print("Fichier xml invalid")
@@ -69,7 +70,7 @@ def ExtractElt(fich):
         NbrEtu = attribut.find('date').text
 
 #Creation du fichier svg
-    dwg = svgwrite.Drawing('projet.svg')
+    dwg = svgwrite.Drawing('fichier.svg')
 
 #Creation de la première entité 
     dwg.add(dwg.rect((10, 10), (200, 100), stroke=svgwrite.rgb(0,0, 0, '%'), fill='blue'))
