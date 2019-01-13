@@ -1,20 +1,15 @@
 # -*-coding:Latin-1 -*
 
-# On importe le module os qui dispose de variables 
-# et de fonctions utiles pour dialoguer avec votre 
-# système d'exploitation
 
+
+# Importation des modules nécessaire 
 import os.path
-
-# Importation des packages et modules nécessaire 
-
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import parse
 import svgwrite
 
-# Définition de la fonction vérifiant léxtenxion du fichier choisi
-
+# Définition de la fonction vérifiant l'extension du fichier xml
 def extensionValidator(fichier):
 	extension = os.path.splitext(fichier)[1][1:]
 	if extension != 'xml' :
@@ -22,9 +17,7 @@ def extensionValidator(fichier):
 	else:
 		return xmlValidator(fichier)
 
-		
-# Définition de la fonction de validation d'fichier 
-
+# Définition de la fonction de validation du fichier xml
 def xmlValidator(fic):
 	try:
 		tree = ET.parse(fic)
@@ -33,7 +26,8 @@ def xmlValidator(fic):
 	except ParseError as error:
 		print("Fichier xml invalid")
 		return False 
-#Extraction des éléments 
+
+# Définition de la fonction d'extraction des éléments du fichier
 def ExtractElt(fich):
     tree = ET.parse(fich)
     root = tree.getroot()
@@ -72,7 +66,7 @@ def ExtractElt(fich):
 #Creation du fichier svg
     dwg = svgwrite.Drawing('fichier.svg')
 
-#Creation de la première entité 
+#Creation de la première entité
     dwg.add(dwg.rect((10, 10), (200, 100), stroke=svgwrite.rgb(0,0, 0, '%'), fill='blue'))
     dwg.add(dwg.text(id1, insert=(30,60), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
     dwg.add(dwg.text(nom, insert=(30,80), stroke='none', fill=svgwrite.rgb(15, 15, 15, '%'), font_size='15px', font_weight="bold"))
@@ -112,4 +106,3 @@ def ExtractElt(fich):
 
 # Sauvegarde du fichier svg dans le disque
     dwg.save()
-  		
