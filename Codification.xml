@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 4.7.4
+- https://www.phpmyadmin.net
+-
+- Hôte : localhost
+- Généré le :  mar. 15 jan. 2019 à 11:44
+- Version du serveur :  10.1.28-MariaDB
+- Version de PHP :  7.1.10
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="Codification" collation="latin1_swedish_ci" charset="latin1">
+            <pma:table name="Chambre">
+                CREATE TABLE `Chambre` (
+                  `numChambre` int(11) DEFAULT NULL,
+                  `numEtage` int(11) DEFAULT NULL,
+                  `idEtudiant` int(11) DEFAULT NULL,
+                  KEY `fkEtud` (`idEtudiant`),
+                  CONSTRAINT `fkEtud` FOREIGN KEY (`idEtudiant`) REFERENCES `Etudiant` (`idEtudiant`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="Etudiant">
+                CREATE TABLE `Etudiant` (
+                  `idEtudiant` int(11) NOT NULL,
+                  `prenom` varchar(45) DEFAULT NULL,
+                  `nom` varchar(30) DEFAULT NULL,
+                  `email` varchar(45) DEFAULT NULL,
+                  `numCarteEtudiant` varchar(10) DEFAULT NULL,
+                  `motDePasse` varchar(30) DEFAULT NULL,
+                  `dateNaissance` date DEFAULT NULL,
+                  PRIMARY KEY (`idEtudiant`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Base de données :  'Codification'
+    -->
+    <database name="Codification">
+        <!-- Table Chambre -->
+        <table name="Chambre">
+            <column name="numChambre">63</column>
+            <column name="numEtage">3</column>
+            <column name="idEtudiant">1</column>
+        </table>
+        <!-- Table Etudiant -->
+        <table name="Etudiant">
+            <column name="idEtudiant">1</column>
+            <column name="prenom">Aliou Ibrahima</column>
+            <column name="nom">SALL</column>
+            <column name="email">aliouibnibrahim@gmail.com</column>
+            <column name="numCarteEtudiant">201607DUM</column>
+            <column name="motDePasse">aliousall</column>
+            <column name="dateNaissance">1997-03-04</column>
+        </table>
+    </database>
+</pma_xml_export>
