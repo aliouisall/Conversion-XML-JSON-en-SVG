@@ -6,7 +6,6 @@ import json
 import argparse
 import os.path
 import requests
-import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import parse
 from graphviz import Digraph
@@ -19,13 +18,13 @@ attributes = []
 tableArray = []
 relationArray = []
 relationContent = []
-multiplicty = []
+multiplicity = []
 nameTable = []
 
 # Définition de la fonction de validation du fichier xml
 def xmlValidator(input):
 	try:
-		tree = ET.parse(input)
+		tree = parse(input)
 		extractGener(tree)
 		return True
 	except ParseError as error:
@@ -35,6 +34,7 @@ def xmlValidator(input):
 # Définition de la fonction de génération pour XML
 def extractGener(input):
     root = input.getroot()
+    print root
     for database in root.findall('database'):
         for indexTable, table in enumerate(database.findall('table')):
             name = table.get('name')
@@ -59,17 +59,20 @@ def extractGener(input):
                 multiplicityContent = multiplicity.text
                 print nameMultiplicity
                 if (index == 0):
-                    dot.edge(nameTable[index], nameRelationship, label=multiplicityContent, constraint='false', color="blue", minlen="12", arrowhead="none")
+                    dot.edge(nameTable[index], nameRelationship, xlabel=multiplicityContent, constraint='false', color="blue", minlen="12", arrowhead="none")
                 else:
-                    dot.edge(nameRelationship, nameTable[index], label=multiplicityContent, constraint='false', color="blue", minlen="12", arrowhead="none")
+                    dot.edge(nameRelationship, nameTable[index], xlabel=multiplicityContent, constraint='false', color="blue", minlen="12", arrowhead="none")
 
 # Définition de la fonction de génération pour JSON
 def gener():
     
     i = 0
     j = 0
+    k1 = 0
+    k2 = 0
     attribArrayLength = len(attributes)
     arrayEntitiesLength = len (arrayEntities)
+    multiplicityLength = len(multiplicity)
 
     # Voci ce que nous devons avoir à la sortie de la boucle {NomEntité | Attribut1 - Atribut2 ...}
     while (i < arrayEntitiesLength):
@@ -92,14 +95,14 @@ def gener():
     
         dictRelation = list(relationContent)[j]
         
-        dot.node(relationArray[j], style="filled", fillcolor="#FCD975", shape='circle', color='blue', label=relationArray[0])
-
+        dot.node(relationArray[j], style="filled", fillcolor="#FCD975", shape='circle', color='blue', label=relationArray[j])
         for indexRelation, element in enumerate(dictRelation):
-            print('Index : ' + str(indexRelation) + '\n Element : ' + str(element))
             if (indexRelation == 0):
-                dot.edge(element, relationArray[0], xlabel=str(multiplicty[indexRelation]), constraint='false', color="blue", minlen="12", arrowhead="none")
+                dot.edge(element, relationArray[j], xlabel=str(multiplicity[indexRelation + k1 - 1]), constraint='false', color="blue", minlen="8", arrowhead="none")
+                k1 += 2
             else:
-                dot.edge(relationArray[0], element, xlabel=str(multiplicty[indexRelation]), constraint='false', color="blue", minlen="12", arrowhead="none")
+                dot.edge(relationArray[j], element, xlabel=str(multiplicity[indexRelation + k2 - 1]), constraint='false', color="blue", minlen="8", arrowhead="none")
+                k2 += 2
         j += 1
 
 # Définition de la fonction d'extraction pour JSON
@@ -120,7 +123,7 @@ def jsonExtractor(parsedContent):
             relationContent.append(parsedContent[i]['data'][0].keys()) # Ajout d'éléments dans la liste du contenu des relations
 
             for key, value in parsedContent[i]['data'][0].items():
-                multiplicty.append(value)
+                multiplicity.append(value)
 
         i = i + 1
     
@@ -162,26 +165,20 @@ group.add_argument("--http", help="permet de désigner un input en flux http")
 args = parser.parse_args()
 
 # Type de l'input passé en argument
-if (args.input == 'xml'):
-    print('Il s\'agit d\'un fichier xml')
-elif(args.input == 'json'):
-    print('Il s\'agit d\'un fichier json')
-
 if (args.inputFile):
-    
     if (args.input == 'json'):
         content = open(args.inputFile) # Ouverture du fichier
         jsonValidatorFile(content) # Appel de la fonction de validation
     elif(args.input == 'xml'):
         xmlValidator(args.inputFile)
-
 elif(args.http):
     if (args.input == 'json'):
         jsonValidatorHttp()
     elif(args.input == 'xml'):
         response = requests.get(args.http)
-        tree = ET.fromstring(response.content)
-        print("Salut")
+        print response
+        # tree = ElementTree.fromstring(response.content)
+        
 # Choix du format
 dot.format = 'svg'
 
