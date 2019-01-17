@@ -46,7 +46,7 @@ def extractGener(input):
                     tableContent = tableContent + " \\l " + str(name) + " \\l " + "}"
                 else:
                     tableContent = tableContent + " \\l " + str(name)
-            print (nameTable)
+            # print (nameTable)
             dot.node(nameTable[indexTable], style="filled", fillcolor="#FCD975", shape='record', color='blue', label=tableContent)
         
         for relationship in database.findall('relationship'):
@@ -55,7 +55,7 @@ def extractGener(input):
             for index, multiplicity in enumerate(relationship.findall('multiplicity')):
                 nameMultiplicity = multiplicity.get('name')
                 multiplicityContent = multiplicity.text
-                print (nameMultiplicity)
+                # print (nameMultiplicity)
                 if (index == 0):
                     dot.edge(nameTable[index], nameRelationship, xlabel=multiplicityContent, constraint='false', color="blue", minlen="12", arrowhead="none")
                 else:
@@ -163,6 +163,20 @@ def jsonTrace():
         for attrib in element:
             print(str(attrib))
 
+def traceXml(fichier):
+
+    tree = parse(fichier)
+    root = tree.getroot()
+    for database in root.findall('database'):
+        for table in database.findall('table'):
+            name = table.get('name')
+            print(name, 'est une classe pour ce fichier ')
+            tableContent = "{" + str(name)
+            print('La liste des attributs de la classe ', name, 'est :')
+            for index, column in enumerate(table.findall('column')):
+                name = column.get('name')
+                print(name)
+
 # Définition des différentes options et arguments
 parser = argparse.ArgumentParser()
 
@@ -188,6 +202,8 @@ if (args.inputFile):
             jsonTrace()
     elif(args.input == 'xml'):
         xmlValidator(args.inputFile)
+        if (args.trace): # On vérifie si l'option -t est activée
+            traceXml(args.inputFile)
 
 # On vérifie si l'input est un flux http
 elif(args.http):
