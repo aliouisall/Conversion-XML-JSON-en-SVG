@@ -4,7 +4,6 @@
 # Importation des modules nécessaires
 import json
 import argparse
-import os.path
 import requests
 from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import parse
@@ -34,7 +33,6 @@ def xmlValidator(input):
 # Définition de la fonction de génération pour XML
 def extractGener(input):
     root = input.getroot()
-    print root
     for database in root.findall('database'):
         for indexTable, table in enumerate(database.findall('table')):
             name = table.get('name')
@@ -98,10 +96,10 @@ def gener():
         dot.node(relationArray[j], style="filled", fillcolor="#FCD975", shape='circle', color='blue', label=relationArray[j])
         for indexRelation, element in enumerate(dictRelation):
             if (indexRelation == 0):
-                dot.edge(element, relationArray[j], xlabel=str(multiplicity[indexRelation + k1 - 1]), constraint='false', color="blue", minlen="8", arrowhead="none")
+                dot.edge(element, relationArray[j], splines="ortho", xlabel=str(multiplicity[indexRelation + k1 - 1]), constraint='false', color="blue", minlen="8", arrowhead="none")
                 k1 += 2
             else:
-                dot.edge(relationArray[j], element, xlabel=str(multiplicity[indexRelation + k2 - 1]), constraint='false', color="blue", minlen="8", arrowhead="none")
+                dot.edge(relationArray[j], element, splines="ortho", xlabel=str(multiplicity[indexRelation + k2 - 1]), constraint='false', color="blue", minlen="8", arrowhead="none")
                 k2 += 2
         j += 1
 
@@ -150,6 +148,21 @@ def jsonValidatorHttp():
         print("Invalid JSON : %s" %error)
         return False
 
+def jsonTrace():
+
+    print ("Les entités sont : ")
+    for element in arrayEntities:
+        print(str(element) + "")
+    
+    print ("\nLes relations sont : ")
+    for element in relationArray:
+        print(str(element))
+    
+    print ("\nLes attributs sont : ")
+    for element in attributes:
+        for attrib in element:
+            print(str(attrib))
+
 # Définition des différentes options et arguments
 parser = argparse.ArgumentParser()
 
@@ -159,7 +172,7 @@ group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("-f", "--file", dest="inputFile", help="permet de désigner un input de type fichier", metavar="FILE")
 parser.add_argument("-i", "--input", choices=['xml','json'], help="permet de dire si l'input est en xml ou en json", required=True)
 parser.add_argument("-o", "--output", dest="outputFile", help="permet de désigner le fichier de sortie", metavar="FILE", required=True)
-parser.add_argument("-t", "--trace", help="permet de dire si on veut afficher les traces")
+parser.add_argument("-t", "--trace", action="store_true", help="permet de dire si on veut afficher les traces")
 group.add_argument("--http", help="permet de désigner un input en flux http")
 
 args = parser.parse_args()
@@ -169,6 +182,8 @@ if (args.inputFile):
     if (args.input == 'json'):
         content = open(args.inputFile) # Ouverture du fichier
         jsonValidatorFile(content) # Appel de la fonction de validation
+        if (args.trace):
+            jsonTrace()
     elif(args.input == 'xml'):
         xmlValidator(args.inputFile)
 elif(args.http):
