@@ -46,7 +46,7 @@ def extractGener(input):
                     tableContent = tableContent + " \\l " + str(name) + " \\l " + "}"
                 else:
                     tableContent = tableContent + " \\l " + str(name)
-            print nameTable
+            print (nameTable)
             dot.node(nameTable[indexTable], style="filled", fillcolor="#FCD975", shape='record', color='blue', label=tableContent)
         
         for relationship in database.findall('relationship'):
@@ -55,7 +55,7 @@ def extractGener(input):
             for index, multiplicity in enumerate(relationship.findall('multiplicity')):
                 nameMultiplicity = multiplicity.get('name')
                 multiplicityContent = multiplicity.text
-                print nameMultiplicity
+                print (nameMultiplicity)
                 if (index == 0):
                     dot.edge(nameTable[index], nameRelationship, xlabel=multiplicityContent, constraint='false', color="blue", minlen="12", arrowhead="none")
                 else:
@@ -191,7 +191,7 @@ elif(args.http):
         jsonValidatorHttp()
     elif(args.input == 'xml'):
         response = requests.get(args.http)
-        print response
+        print (response)
         # tree = ElementTree.fromstring(response.content)
         
 # Choix du format
