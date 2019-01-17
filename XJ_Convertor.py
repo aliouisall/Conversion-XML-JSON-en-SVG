@@ -9,7 +9,7 @@ from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import parse
 from graphviz import Digraph
 
-dot = Digraph(comment='Entity Relationship Diagram')
+dot = Digraph(comment='Entity Relationship Diagram', graph_attr={'splines': 'ortho'})
 
 # Déclaration de la liste des entités, attributs, associations et multiplicités
 arrayEntities = []
@@ -163,6 +163,23 @@ def jsonTrace():
         for attrib in element:
             print(str(attrib))
 
+#Définition de la fonction qui accéde au fichier par flux pour recupérer son contenu
+def fluxXml(url):
+	adress = requests.get('http://sgbdproject.000webhostapp.com/files/kyQtZ.html')
+	fichier = open("flux.xml", "w")
+	fichier.write(adress.text)
+	fichier.close()
+	tree = parse('flux.xml')
+	root = tree.getroot()
+	for database in root.findall('database'):
+		for table in database.findall('table'):
+			name = table.get('name')
+			print(name)
+			for index, column in enumerate(table.findall('column')):
+				name = column.get('name')
+				print(name)
+
+# Définition de la fonction qui gère les traces pour un fichier XML
 def traceXml(fichier):
 
     tree = parse(fichier)
@@ -202,17 +219,20 @@ if (args.inputFile):
             jsonTrace()
     elif(args.input == 'xml'):
         xmlValidator(args.inputFile)
-        if (args.trace): # On vérifie si l'option -t est activée
+        if (args.trace):
             traceXml(args.inputFile)
 
 # On vérifie si l'input est un flux http
 elif(args.http):
     if (args.input == 'json'):
         jsonValidatorHttp()
+        if (args.trace):
+            jsonTrace()
     elif(args.input == 'xml'):
-        response = requests.get(args.http)
-        print (response)
-        # tree = ElementTree.fromstring(response.content)
+        print("Non encore pris en compte")
+        # fluxXml(args.http)
+        if (args.trace):
+            traceXml(args.inputFile)
         
 # Choix du format
 dot.format = 'svg'
