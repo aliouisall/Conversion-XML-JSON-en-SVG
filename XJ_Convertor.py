@@ -134,7 +134,7 @@ def jsonValidatorFile(content):
         jsonExtractor(parsedJson)
         return True
     except ValueError as error:
-        print("Invalid JSON : %s" %error)
+        print("JSON invalide : %s" %error)
         return False
 
 # Définition de la fonction de validation pour un lien JSON
@@ -145,7 +145,7 @@ def jsonValidatorHttp():
         jsonExtractor(json_data)
         return True
     except ValueError as error:
-        print("Invalid JSON : %s" %error)
+        print("JSON invalide : %s" %error)
         return False
 
 def jsonTrace():
@@ -166,7 +166,7 @@ def jsonTrace():
 # Définition des différentes options et arguments
 parser = argparse.ArgumentParser()
 
-# Exclusion mutuelle de deux options
+# Exclusion mutuelle entre l'option f et http
 group = parser.add_mutually_exclusive_group(required=True)
 
 group.add_argument("-f", "--file", dest="inputFile", help="permet de désigner un input de type fichier", metavar="FILE")
@@ -177,15 +177,19 @@ group.add_argument("--http", help="permet de désigner un input en flux http")
 
 args = parser.parse_args()
 
-# Type de l'input passé en argument
+# On vérifie si l'input est un fichier
 if (args.inputFile):
+
     if (args.input == 'json'):
         content = open(args.inputFile) # Ouverture du fichier
         jsonValidatorFile(content) # Appel de la fonction de validation
-        if (args.trace):
+
+        if (args.trace): # On vérifie si l'option -t est activée
             jsonTrace()
     elif(args.input == 'xml'):
         xmlValidator(args.inputFile)
+
+# On vérifie si l'input est un flux http
 elif(args.http):
     if (args.input == 'json'):
         jsonValidatorHttp()
