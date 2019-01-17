@@ -60,5 +60,18 @@
             <column name="motDePasse">aliousall</column>
             <column name="dateNaissance">1997-03-04</column>
         </table>
+        <!-- Table Pavillon -->
+        <table name="Pavillon">
+            <column name="numChambre">63</column>
+            <column name="nomPavillon">C</column>
+        </table>
+        <relationship name = "Loger">
+            <multiplicity name = "Chambre">0:n</multiplicity>
+            <multiplicity name = "Etudiant">1:1</multiplicity>
+        </relationship>
+        <relationship name = "Se situer">
+            <multiplicity name = "Chambre">1:1</multiplicity>
+            <multiplicity name = "Pavillon">1:n</multiplicity>
+        </relationship>
     </database>
 </pma_xml_export>

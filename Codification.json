@@ -57,5 +57,27 @@
           "Etudiant": "1:1"
         }
       ]
+    },
+    {
+      "type": "relationship",
+      "name": "Se situer",
+      "database": "Codification",
+      "data": [
+        {
+          "Pavillon": "1:n",
+          "Chambre": "1:1"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "name": "Choisir",
+      "database": "Codification",
+      "data": [
+        {
+          "Pavillon": "n:n",
+          "Etudiant": "1:1"
+        }
+      ]
     }
 ]
